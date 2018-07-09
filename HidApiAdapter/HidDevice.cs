@@ -105,6 +105,27 @@ namespace HidApiAdapter
             return m_DeviceInfoBuffer.ToString();
         }
 
+        public IEnumerable<string> DeviceStrings()
+        {
+            const int maxStringNum = 16;
+            int counter = 0;
+
+            m_DeviceInfoBuffer.Clear();
+            while (HidApi.hid_get_indexed_string(m_DevicePtr, counter, m_DeviceInfoBuffer, 1024 / 4) == 0 && counter++ < maxStringNum)
+            {
+                yield return m_DeviceInfoBuffer.ToString();
+                m_DeviceInfoBuffer.Clear();
+            }
+        }
+
+        public string DevicesString(int index)
+        {
+            m_DeviceInfoBuffer.Clear();
+
+            var res = HidApi.hid_get_indexed_string(m_DevicePtr, index, m_DeviceInfoBuffer, 1024 / 4);
+
+            return res == 0 ? m_DeviceInfo.ToString() : null;
+        }
 
         #endregion
 

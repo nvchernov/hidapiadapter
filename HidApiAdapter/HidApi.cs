@@ -353,7 +353,7 @@ namespace HidApiAdapter
         /// <param name="str">A wide string buffer to put the data into</param>
         /// <param name="maxlen">The length of the buffer in multiples of wchar_t</param>
         /// <returns>This function returns 0 on success and -1 on error.</returns>
-        public static int hid_get_indexed_string(IntPtr device, int string_index, string str, uint maxlen)
+        public static int hid_get_indexed_string(IntPtr device, int string_index, StringBuilder str, uint maxlen)
         {
             if (m_OsType == OsType.Win32)
                 return HidApiWin32.hid_get_indexed_string(device, string_index, str, maxlen);

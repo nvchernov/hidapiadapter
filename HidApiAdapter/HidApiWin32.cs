@@ -62,7 +62,7 @@ namespace HidApiAdapter
         public static extern int hid_get_serial_number_string(IntPtr device, StringBuilder serial, uint maxlen);
 
         [DllImport(DLL_FILE_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern int hid_get_indexed_string(IntPtr device, int string_index, string str, uint maxlen);
+        public static extern int hid_get_indexed_string(IntPtr device, int string_index, StringBuilder str, uint maxlen);
 
         [DllImport(DLL_FILE_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern IntPtr hid_error(IntPtr device);
