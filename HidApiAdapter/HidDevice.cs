@@ -8,6 +8,9 @@ namespace HidApiAdapter
 {
     public class HidDevice
     {
+        private const int MARSHALED_STRING_MAX_LEN = 1024 / 2;
+
+        private const int BUFFER_DEFAULT_SIZE = 1024;
 
         private readonly hid_device_info m_DeviceInfo;
         private IntPtr m_DevicePtr = IntPtr.Zero;
@@ -49,7 +52,7 @@ namespace HidApiAdapter
             return true;
         }
 
-        private byte[] m_WriteBuffer = new byte[1024];
+        private byte[] m_WriteBuffer = new byte[BUFFER_DEFAULT_SIZE];
 
         public int Write(byte[] bytes)
         {
@@ -79,12 +82,12 @@ namespace HidApiAdapter
 
         #region device info
 
-        StringBuilder m_DeviceInfoBuffer = new StringBuilder(1024);
+        StringBuilder m_DeviceInfoBuffer = new StringBuilder(BUFFER_DEFAULT_SIZE);
 
         public string SerialNumber()
         {
             m_DeviceInfoBuffer.Clear();
-            HidApi.hid_get_serial_number_string(m_DevicePtr, m_DeviceInfoBuffer, 1024 / 4);
+            HidApi.hid_get_serial_number_string(m_DevicePtr, m_DeviceInfoBuffer, MARSHALED_STRING_MAX_LEN);
 
             return m_DeviceInfoBuffer.ToString();
         }
@@ -92,7 +95,7 @@ namespace HidApiAdapter
         public string Manufacturer()
         {
             m_DeviceInfoBuffer.Clear();
-            HidApi.hid_get_manufacturer_string(m_DevicePtr, m_DeviceInfoBuffer, 1024 / 4);
+            HidApi.hid_get_manufacturer_string(m_DevicePtr, m_DeviceInfoBuffer, MARSHALED_STRING_MAX_LEN);
 
             return m_DeviceInfoBuffer.ToString();
         }
@@ -100,7 +103,7 @@ namespace HidApiAdapter
         public string Product()
         {
             m_DeviceInfoBuffer.Clear();
-            HidApi.hid_get_product_string(m_DevicePtr, m_DeviceInfoBuffer, 1024 / 4);
+            HidApi.hid_get_product_string(m_DevicePtr, m_DeviceInfoBuffer, MARSHALED_STRING_MAX_LEN);
 
             return m_DeviceInfoBuffer.ToString();
         }
@@ -111,7 +114,7 @@ namespace HidApiAdapter
             int counter = 0;
 
             m_DeviceInfoBuffer.Clear();
-            while (HidApi.hid_get_indexed_string(m_DevicePtr, counter, m_DeviceInfoBuffer, 1024 / 4) == 0 && counter++ < maxStringNum)
+            while (HidApi.hid_get_indexed_string(m_DevicePtr, counter, m_DeviceInfoBuffer, MARSHALED_STRING_MAX_LEN) == 0 && counter++ < maxStringNum)
             {
                 yield return m_DeviceInfoBuffer.ToString();
                 m_DeviceInfoBuffer.Clear();
@@ -122,7 +125,7 @@ namespace HidApiAdapter
         {
             m_DeviceInfoBuffer.Clear();
 
-            var res = HidApi.hid_get_indexed_string(m_DevicePtr, index, m_DeviceInfoBuffer, 1024 / 4);
+            var res = HidApi.hid_get_indexed_string(m_DevicePtr, index, m_DeviceInfoBuffer, MARSHALED_STRING_MAX_LEN);
 
             return res == 0 ? m_DeviceInfo.ToString() : null;
         }
