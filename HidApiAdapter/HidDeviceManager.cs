@@ -60,7 +60,7 @@ namespace HidApiAdapter
                 return null;
 
             hid_device_info deviceInfo = 
-                (hid_device_info)Marshal.PtrToStructure(devicesLinkedList, typeof(hid_device_info));
+                Marshal.PtrToStructure<hid_device_info>(devicesLinkedList);
 
             devices.Add(new HidDevice(deviceInfo, devicesLinkedList));
 
@@ -68,7 +68,7 @@ namespace HidApiAdapter
             {
                 var ptr = deviceInfo.next;
 
-                deviceInfo = (hid_device_info)Marshal.PtrToStructure(deviceInfo.next, typeof(hid_device_info));
+                deviceInfo = Marshal.PtrToStructure<hid_device_info>(deviceInfo.next);
 
                 devices.Add(new HidDevice(deviceInfo, ptr));
             }
