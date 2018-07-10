@@ -23,25 +23,48 @@ namespace HidApiAdapter
             m_DevicePtr = devicePtr;
         }
 
-        public bool WasConnected => m_DevicePtr != IntPtr.Zero;
+        /// <summary>
+        /// Can instance interact with HID device 
+        /// </summary>
+        public bool IsValid => m_DevicePtr != IntPtr.Zero;
+
+        private bool m_IsConnected;
+        /// <summary>
+        /// Device connected successful
+        /// </summary>
+        public bool IsConnected => m_IsConnected;
 
         public int VendorId => m_DeviceInfo.vendor_id;
         public int ProductId => m_DeviceInfo.product_id;
 
-
+        /// <summary>
+        /// Platform-specific device path
+        /// </summary>
+        /// <returns></returns>
         public string Path() => 
             Marshal.PtrToStringAnsi(m_DeviceInfo.path);
 
+        /// <summary>
+        /// Connect to HID device
+        /// </summary>
+        /// <returns></returns>
         public bool Connect()
         {
             if (m_DevicePtr == IntPtr.Zero)
                 return false;
 
             m_DevicePtr = HidApi.hid_open_path(m_DeviceInfo.path);
-           
+
+            if(m_DevicePtr != IntPtr.Zero)
+                m_IsConnected = true;
+
             return true;
         }
 
+        /// <summary>
+        /// Disconnect from HID device
+        /// </summary>
+        /// <returns></returns>
         public bool Disconnect()
         {
             if (m_DevicePtr == IntPtr.Zero)
@@ -49,6 +72,7 @@ namespace HidApiAdapter
 
             HidApi.hid_close(m_DevicePtr);
 
+            m_IsConnected = false;
             return true;
         }
 
@@ -84,6 +108,10 @@ namespace HidApiAdapter
 
         StringBuilder m_DeviceInfoBuffer = new StringBuilder(BUFFER_DEFAULT_SIZE);
 
+        /// <summary>
+        /// Device serial number
+        /// </summary>
+        /// <returns></returns>
         public string SerialNumber()
         {
             m_DeviceInfoBuffer.Clear();
@@ -92,6 +120,11 @@ namespace HidApiAdapter
             return m_DeviceInfoBuffer.ToString();
         }
 
+
+        /// <summary>
+        /// Device manufacturer
+        /// </summary>
+        /// <returns></returns>
         public string Manufacturer()
         {
             m_DeviceInfoBuffer.Clear();
@@ -100,6 +133,10 @@ namespace HidApiAdapter
             return m_DeviceInfoBuffer.ToString();
         }
 
+        /// <summary>
+        /// Device product
+        /// </summary>
+        /// <returns></returns>
         public string Product()
         {
             m_DeviceInfoBuffer.Clear();
@@ -108,6 +145,10 @@ namespace HidApiAdapter
             return m_DeviceInfoBuffer.ToString();
         }
 
+        /// <summary>
+        /// Get all available strings of HID device 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<string> DeviceStrings()
         {
             const int maxStringNum = 16;
@@ -121,6 +162,11 @@ namespace HidApiAdapter
             }
         }
 
+        /// <summary>
+        /// Get a string from a HID device, based on its string index
+        /// </summary>
+        /// <param name="index">The index of the string to get</param>
+        /// <returns></returns>
         public string DevicesString(int index)
         {
             m_DeviceInfoBuffer.Clear();
@@ -134,10 +180,10 @@ namespace HidApiAdapter
 
         public override string ToString()
         {
-            if (WasConnected)
+            if (IsValid)
                 return $"manufacturer: {Manufacturer()}, serial_number:{SerialNumber()}, product:{Product()}";
             else
-                return "unknown";
+                return "unknown device (not connected)";
         }
 
     }

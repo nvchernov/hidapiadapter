@@ -6,6 +6,9 @@ using System.Text;
 
 namespace HidApiAdapter
 {
+    /// <summary>
+    /// HID devices manager, to get instance of <see cref="HidDeviceManager"/> use static method GetManager
+    /// </summary>
     public class HidDeviceManager
     {
 
@@ -15,6 +18,10 @@ namespace HidApiAdapter
 
         private HidDeviceManager() { }
 
+        /// <summary>
+        /// Get current HID devices manager
+        /// </summary>
+        /// <returns>HID devices manager</returns>
         public static HidDeviceManager GetManager() =>
             m_DeviceManager ?? (m_DeviceManager = new HidDeviceManager());
 
@@ -25,20 +32,29 @@ namespace HidApiAdapter
 
         ~HidDeviceManager()
         {
-            foreach (var deviceInfo in devicesInfo)
+            foreach (var deviceInfo in devicesEnumerations)
                 HidApi.hid_free_enumeration(deviceInfo);
 
             HidApi.hid_exit();
         }
 
-        private List<IntPtr> devicesInfo = new List<IntPtr>();
+        /// <summary>
+        /// Every device search result linked list of HidApi.hid_enumerate will store here to free unmanagment memory on destructor
+        /// </summary>
+        private List<IntPtr> devicesEnumerations = new List<IntPtr>();
 
+        /// <summary>
+        /// Try to find devices by Vendor Id and Product Id
+        /// </summary>
+        /// <param name="vid">Vendor Id. Set pid to 0 to find devices with any Product Id</param>
+        /// <param name="pid">Product Id. Set vid and pid to 0 to find any devices</param>
+        /// <returns></returns>
         public List<HidDevice> SearchDevices(int vid, int pid)
         {
             var devices = new List<HidDevice>();
 
             var devicesLinkedList = HidApi.hid_enumerate((ushort)vid, (ushort)pid);
-            devicesInfo.Add(devicesLinkedList);
+            devicesEnumerations.Add(devicesLinkedList);
 
             if (devicesLinkedList == IntPtr.Zero)
                 return null;

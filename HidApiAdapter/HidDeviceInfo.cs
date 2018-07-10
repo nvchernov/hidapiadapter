@@ -5,36 +5,54 @@ using System.Text;
 
 namespace HidApiAdapter
 {
+    /// <summary>
+    /// hidapi info structure
+    /// </summary>
     public struct hid_device_info
     {
-        /** Platform-specific device path */
+        /// <summary>
+        /// Platform-specific device path
+        /// </summary>
         public IntPtr path;
 
-        /** Device Vendor ID */
+        /// <summary>
+        /// Device Vendor ID
+        /// </summary>
         public ushort vendor_id;
 
-        /** Device Product ID */
+        /// <summary>
+        /// Device Product ID
+        /// </summary>
         public ushort product_id;
 
-        /** Serial Number */
+        /// <summary>
+        /// Serial Number
+        /// </summary>
         public IntPtr serial_number;
 
-        /** Device Release Number in binary-coded decimal,
-            also known as Device Version Number */
+        /// <summary>
+        /// Device Release Number in binary-coded decimal, also known as Device Version Number
+        /// </summary>
         public ushort release_number;
 
-        /** Manufacturer String */
+        /// <summary>
+        /// Manufacturer String
+        /// </summary>
         public IntPtr manufacturer_string;
 
-        /** Product string */
+        /// <summary>
+        /// Product string
+        /// </summary>
         public IntPtr product_string;
 
-        /** Usage Page for this Device/Interface
-            (Windows/Mac only). */
+        /// <summary>
+        /// Usage for this Device/Interface (Windows/Mac only).
+        /// </summary>
         public ushort usage_page;
 
-        /** Usage for this Device/Interface
-            (Windows/Mac only).*/
+        /// <summary>
+        /// Usage Page for this Device/Interface (Windows/Mac only).
+        /// </summary>
         public ushort usage;
 
         /// <summary>
