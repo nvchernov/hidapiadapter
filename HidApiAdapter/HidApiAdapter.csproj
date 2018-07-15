@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <PackageLicenseUrl>https://github.com/nvchernov/hidapiadapter/blob/master/hidapiadapter_licence_bsd.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/nvchernov/hidapiadapter</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nvchernov/hidapiadapter</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>hid usb hidapi</PackageTags>
+    <Authors />
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>This project was created to port popular library, that hepls to interact with HID devices - hidapi (C language) https://github.com/signal11/hidapi</Description>
   </PropertyGroup>
 
   <ItemGroup>
