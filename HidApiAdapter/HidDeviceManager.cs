@@ -57,7 +57,7 @@ namespace HidApiAdapter
             devicesEnumerations.Add(devicesLinkedList);
 
             if (devicesLinkedList == IntPtr.Zero)
-                return null;
+                return devices;
 
             hid_device_info deviceInfo =
 #if NET40
