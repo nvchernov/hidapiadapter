@@ -26,7 +26,7 @@ namespace HidApiAdapter
         public static extern void hid_free_enumeration(IntPtr devs);
 
         [DllImport(DLL_FILE_NAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr hid_open(ushort vendor_id, ushort product_id, [In] string serial_number);
+        public static extern IntPtr hid_open(ushort vendor_id, ushort product_id, [MarshalAs(UnmanagedType.LPWStr)] string serial_number);
 
         [DllImport(DLL_FILE_NAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr hid_open_path(IntPtr path);
