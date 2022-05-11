@@ -37,6 +37,9 @@ namespace HidApiAdapter
         public int VendorId => m_DeviceInfo.vendor_id;
         public int ProductId => m_DeviceInfo.product_id;
 
+        public int UsagePage => m_DeviceInfo.usage_page;
+        public int Usage => m_DeviceInfo.usage;
+
         /// <summary>
         /// Platform-specific device path
         /// </summary>
@@ -95,7 +98,12 @@ namespace HidApiAdapter
 
             return HidApi.hid_write(m_DevicePtr, m_WriteBuffer, Convert.ToUInt32(bytes.Length + 1));
         }
-        
+
+        public int SendFeatureReport(byte[] bytes)
+        {
+            return HidApi.hid_send_feature_report(m_DevicePtr, bytes, Convert.ToUInt32(bytes.Length));
+        }
+
         public int Read(byte[] buff, int len)
         {
             if (m_DevicePtr == IntPtr.Zero)
