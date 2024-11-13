@@ -50,11 +50,22 @@ To interact with devices use methods Read\Write. Here example
 
 `Install-Package HidApiAdapter`
 
+## Troubleshooting
+
+### Properties of installed dlls
+
 If you getting DllNotFoundException: ... DLL "hidapi32"
 
 Change properties of installed dlls - hidapi32.dll hidapi64.dll like on screenshot
 
 ![image](https://user-images.githubusercontent.com/14893576/50458730-72e65780-0976-11e9-9d46-1d4874083586.png)
+
+### No C++ Redistributable package installed
+
+You may getting exception "DllNotFoundException: Unable to load DLL 'hidapi32': The specified module could not be found" because you have no C++ Redistributable package installed on your windows. To fix this just install it
+
+
+
 
 
 
